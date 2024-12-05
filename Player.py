@@ -1,9 +1,13 @@
 import turtle
+import math
+
+import dot
 
 
 class Player:
     def __init__(self, width, height):
         self.body = turtle.Turtle()
+        self.score = 0
         self.body.shape('triangle')
         self.body.color('blue')
         self.body.penup()
@@ -70,6 +74,11 @@ class Player:
         # witchcraft. this shouldn't be for speeding
         self.screen.onkeypress(lambda: self.dash(True), "space")
         self.screen.onkeyrelease(lambda: self.dash(False), "space")
+
+    def distance(self, that: dot.Dot):
+        return math.sqrt((self.body.xcor() - that.x)**2 + (self.body.ycor() - that.y)**2)
+
+
 
 # for run part
 # player = Player()
