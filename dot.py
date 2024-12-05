@@ -5,8 +5,9 @@ class Dot:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.color = 'blue'
-        self.radius = 2
+        self.color = 'green'
+        self.radius = 0.2
+        turtle.pensize(1)
 
     def draw(self):
         turtle.penup()

@@ -32,8 +32,9 @@ class Player:
 
     def c_keys(self, key, value):
         self.keys[key] = value
+
     def check_wall(self):
-        if self.body.xcor() >= self.canvas_width-15:
+        if self.body.xcor() >= self.canvas_width - 15:
             self.keys["rightwall"] = True
         else:
             self.keys["rightwall"] = False
@@ -53,7 +54,6 @@ class Player:
         else:
             self.keys["downwall"] = False
 
-
     def dash(self, status):
         self.speed = 0.5 + (status * 2)
 
@@ -70,7 +70,6 @@ class Player:
         # witchcraft. this shouldn't be for speeding
         self.screen.onkeypress(lambda: self.dash(True), "space")
         self.screen.onkeyrelease(lambda: self.dash(False), "space")
-
 
 # for run part
 # player = Player()
