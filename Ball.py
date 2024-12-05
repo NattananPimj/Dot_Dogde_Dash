@@ -3,7 +3,7 @@ import math
 
 
 class Ball:
-    def __init__(self, size, x, y, vx, vy, id):
+    def __init__(self, size, x, y, vx, vy, id, width, height):
         self.size = size
         self.x = x
         self.y = y
@@ -13,8 +13,8 @@ class Ball:
         self.mass = 100 * size ** 2
         self.count = 0
         self.id = id
-        self.canvas_width = turtle.screensize()[0]
-        self.canvas_height = turtle.screensize()[1]
+        self.canvas_width = width
+        self.canvas_height = height
 
     def draw(self):
         # draw a circle of radius equals to size centered at (x, y) and paint it with color
@@ -116,3 +116,9 @@ class Ball:
             return (self.canvas_height + self.y - self.size) / (-self.vy)
         else:
             return math.inf
+# turtle.speed(0)
+# turtle.tracer(0)
+# turtle.hideturtle()
+# ball = Ball(100, 0, 0, 1, 1, 1)
+# ball.draw()
+# turtle.done()
