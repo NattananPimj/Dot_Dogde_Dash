@@ -2,7 +2,7 @@ import turtle
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, width, height):
         self.body = turtle.Turtle()
         self.body.shape('triangle')
         self.body.color('blue')
@@ -10,29 +10,52 @@ class Player:
         self.body.speed(1)
         self.status = True
         self.life = 3
-        self.position = (0, 0)
-        self.speed = 2
+        self.speed = 0.5
         self.body.speed(self.speed)
         self.body.setheading(90)
-        self.keys = {"w": False, "s": False, "a": False, "d": False}
+        self.keys = {"w": False, "s": False, "a": False, "d": False,
+                     "upwall": False, "leftwall": False, "rightwall": False, "downwall": False}
         self.screen = turtle.Screen()
+        self.canvas_width = width
+        self.canvas_height = height
 
     def movement(self):
-        if self.keys["w"]:
+        if self.keys["w"] and (not self.keys["upwall"]):
             self.body.goto(self.body.xcor(), self.body.ycor() + self.speed)
-        if self.keys["s"]:
+        if self.keys["s"] and (not self.keys["downwall"]):
             self.body.goto(self.body.xcor(), self.body.ycor() - self.speed)
-        if self.keys["a"]:
+        if self.keys["a"] and (not self.keys["leftwall"]):
             self.body.goto(self.body.xcor() - self.speed, self.body.ycor())
-        if self.keys["d"]:
+        if self.keys["d"] and (not self.keys["rightwall"]):
             self.body.goto(self.body.xcor() + self.speed, self.body.ycor())
         turtle.update()
 
     def c_keys(self, key, value):
         self.keys[key] = value
+    def check_wall(self):
+        if self.body.xcor() >= self.canvas_width-15:
+            self.keys["rightwall"] = True
+        else:
+            self.keys["rightwall"] = False
+
+        if self.body.xcor() <= -self.canvas_width + 15:
+            self.keys["leftwall"] = True
+        else:
+            self.keys["leftwall"] = False
+
+        if self.body.ycor() >= self.canvas_height - 17:
+            self.keys["upwall"] = True
+        else:
+            self.keys["upwall"] = False
+
+        if self.body.ycor() <= -self.canvas_height + 13:
+            self.keys["downwall"] = True
+        else:
+            self.keys["downwall"] = False
+
 
     def dash(self, status):
-        self.speed = 2 + (status * 10)
+        self.speed = 0.5 + (status * 2)
 
     def controlled(self):
         self.screen.onkeypress(lambda: self.c_keys("w", True), "w")
@@ -50,10 +73,10 @@ class Player:
 
 
 # for run part
-player = Player()
-
-player.controlled()
-player.screen.listen()
-
-while True:
-    player.movement()
+# player = Player()
+#
+# player.controlled()
+# player.screen.listen()
+#
+# while True:
+#     player.movement()
