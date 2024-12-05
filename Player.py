@@ -1,3 +1,4 @@
+import time
 import turtle
 import math
 
@@ -14,7 +15,8 @@ class Player:
         self.body.speed(1)
         self.status = True
         self.life = 3
-        self.speed = 0.5
+        self.__default_speed = 0.5
+        self.speed = self.__default_speed
         self.body.speed(self.speed)
         self.body.setheading(90)
         self.keys = {"w": False, "s": False, "a": False, "d": False,
@@ -22,6 +24,7 @@ class Player:
         self.screen = turtle.Screen()
         self.canvas_width = width
         self.canvas_height = height
+        self.dashtime = 0
 
     def movement(self):
         if self.keys["w"] and (not self.keys["upwall"]):
@@ -59,7 +62,14 @@ class Player:
             self.keys["downwall"] = False
 
     def dash(self, status):
-        self.speed = 0.5 + (status * 2)
+        self.speed = self.__default_speed + (status * 2)
+        self.dashtime = time.time()
+
+    def undash(self):
+        rn = time.time()
+        if self.dashtime != 0 and rn >= self.dashtime + 0.25:
+            self.dashtime = 0
+            self.speed = self.__default_speed
 
     def controlled(self):
         self.screen.onkeypress(lambda: self.c_keys("w", True), "w")
@@ -73,7 +83,8 @@ class Player:
         # hope user don't hold space plssss just don't I don't know how to make them properly this shit is just a
         # witchcraft. this shouldn't be for speeding
         self.screen.onkeypress(lambda: self.dash(True), "space")
-        self.screen.onkeyrelease(lambda: self.dash(False), "space")
+        # self.screen.onkeypress(lambda: self.dash(True), "space")
+        # self.screen.onkeyrelease(lambda: self.dash(False), "space")
 
     def distance(self, that: dot.Dot):
         return math.sqrt((self.body.xcor() - that.x)**2 + (self.body.ycor() - that.y)**2)

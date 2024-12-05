@@ -71,11 +71,13 @@ class RunGame:
             self.player.check_wall()
             self.player.body.showturtle()
             self.player.movement()
+            self.player.undash()
             for ball in self.ball_list:
                 ball.move(0.01)
             for d in self.dos_lst:
                 if self.player.distance(d) <= (d.radius + 10):
                     self.player.score += 1
+                    print(self.player.score)
                     self.dos_lst.remove(d)
             if len(self.dos_lst) <= 8:
                 d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
