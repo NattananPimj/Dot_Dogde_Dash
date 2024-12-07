@@ -8,7 +8,6 @@ import dot
 class Player:
     def __init__(self, width, height):
         self.body = turtle.Turtle()
-        self.score = 0
         self.body.shape('triangle')
         self.body.color('blue')
         self.body.penup()
@@ -25,6 +24,8 @@ class Player:
         self.canvas_width = width
         self.canvas_height = height
         self.dashtime = 0
+        self.immunity = False
+        self.immunetime = 0
 
     def movement(self):
         if self.keys["w"] and (not self.keys["upwall"]):
@@ -86,16 +87,30 @@ class Player:
         # self.screen.onkeypress(lambda: self.dash(True), "space")
         # self.screen.onkeyrelease(lambda: self.dash(False), "space")
 
-    def distance(self, that: dot.Dot):
-        return math.sqrt((self.body.xcor() - that.x)**2 + (self.body.ycor() - that.y)**2)
+    def distance(self, that):
+        return math.sqrt((self.body.xcor() - that.x) ** 2 + (self.body.ycor() - that.y) ** 2)
 
+    def be_immune(self):
+        self.immunity = True
+        self.immunetime = time.time()
+        self.body.color('gray')
+
+    def stop_immune(self):
+        rn = time.time()
+        if self.immunetime != 0 and rn >= self.immunetime + 2:
+            self.immunity = False
+            self.body.color('blue')
+
+    def disable_movement(self):
+        k = list(self.keys.keys())[4:8]
+        for key in k:
+            self.keys[key] = True
+
+    def reset_movement(self):
+        k = list(self.keys.keys())
+        for key in k:
+            self.keys[key] = False
 
 
 # for run part
-# player = Player()
-#
-# player.controlled()
-# player.screen.listen()
-#
-# while True:
-#     player.movement()
+player = Player(400, 300)
