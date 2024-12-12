@@ -8,6 +8,7 @@ class Dot:
         self.color = 'green'
         self.radius = 0.2
         turtle.pensize(1)
+        turtle.hideturtle()
 
     def draw(self):
         turtle.penup()
