@@ -15,7 +15,7 @@ class Player:
         self.body.speed(1)
         self.status = True
         self.life = 3
-        self.__default_speed = 0.5
+        self.__default_speed = 0.8
         self.speed = self.__default_speed
         self.body.speed(self.speed)
         self.body.setheading(90)
