@@ -3,7 +3,7 @@ import math
 
 
 class Ball:
-    def __init__(self, size, x, y, vx, vy, id, width, height):
+    def __init__(self, size, x, y, vx, vy, width, height):
         self.size = size
         self.x = x
         self.y = y
@@ -12,7 +12,6 @@ class Ball:
         self.color = "red"
         self.mass = 100 * size ** 2
         self.count = 0
-        self.id = id
         self.canvas_width = width
         self.canvas_height = height
         self.moving = True

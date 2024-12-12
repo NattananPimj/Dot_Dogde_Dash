@@ -2,8 +2,6 @@ import time
 import turtle
 import math
 
-import dot
-
 
 class Player:
     def __init__(self, width, height):
@@ -114,4 +112,3 @@ class Player:
         for key in k:
             self.keys[key] = False
         self.move = True
-

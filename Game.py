@@ -31,7 +31,7 @@ class RunGame:
             ball = Ball.Ball(self.ball_rad,
                              random.randint(-self.canvas_width + self.ball_rad, self.canvas_width - self.ball_rad),
                              random.randint(-self.canvas_height + self.ball_rad, self.canvas_height - self.ball_rad),
-                             speed * self._random_no_0(), speed * self._random_no_0(), i,
+                             speed * self._random_no_0(), speed * self._random_no_0(),
                              self.canvas_width, self.canvas_height)
             self.ball_list.append(ball)
         # adding dots
