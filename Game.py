@@ -43,7 +43,7 @@ class RunGame:
             d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
                         random.randint(-self.canvas_height + 20, self.canvas_height - 20))
             self.dots_lst.append(d)
-        self.player.be_immune()  # let player be immune at the start
+
         self.ui = turtle.Turtle()
         self.ui.hideturtle()
         self.ui.penup()
@@ -86,6 +86,8 @@ class RunGame:
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
 
     def run(self):
+        self.player.be_immune()  # let player be immune at the start
+        self.player.body.showturtle()
         self.__draw_border()
         turtle.hideturtle()
         for ball in self.ball_list:
@@ -120,7 +122,6 @@ class RunGame:
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
                         and self.player.life > 0):
                     self.player.life -= 1
-                    print(self.player.life)
                     if self.player.life > 0:
                         self.player.be_immune()
                     if self.player.life == 0:
@@ -144,31 +145,44 @@ class RunGame:
     def set_start(self):
         self.start = True
 
-    def title_ui(self):
+    def title_ui(self, color="green3"):
         turtle.hideturtle()
         self.ui.color("black")
         self.ui.goto(0, 50)
         self.ui.write("DOT DASH DODGE", font=("Courier", 50, "bold"), align="center")
         self.ui.goto(0, 0)
-        self.ui.color("green3")
+        self.ui.color(color)
         self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
 
     def title(self):  # TODO this shit is broken fixed it idiot
-        self.ui.hideturtle()
-        self.screen_ui.listen()
-        self.title_ui()
+        colorlst = ["green", "green3"]
+        self.__draw_border()
+        turtle.hideturtle()
+        self.player.controlled()
+        self.player.screen.listen()
+        self.player.body.hideturtle()
+        st = time.time()
+        c = 0
         while True:
-            pass
-            # self.screen_ui.onkey(self.set_start, "space")
-            # if self.start:
-            #     print("hi")
-            # for ball in self.ball_list:
-            #     ball.draw()
-            # turtle.clear()
+            if time.time() - st >= 0.5:
+                st = time.time()
+                if c == 0:
+                    c = 1
+                else:
+                    c = 0
+            turtle.clear()
+            self.ui.clear()
+            self.title_ui(colorlst[c])
+            turtle.update()  # don't dare u remove this line this is life
+            turtle.onkey(self.set_start, "space")
+            if self.start:
+                break
+        self.ui.clear()
+        self.run()
 
 
 run = RunGame()
-# run.title()
+run.title()
 # title not done yet run by run.run(
-run.run()
+# run.run()
 turtle.done()
