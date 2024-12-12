@@ -1,24 +1,19 @@
-import sys
 import turtle
 import Ball
 import Player
 import random
-import heapq
-import my_event
 import dot
 import time
 
 
 class RunGame:
     def __init__(self, balls=5, dots=10, size=0.1, speed=10):
-        self.score = 0
+        self.__score = 0
+        self.__score_lst = [0]
         self.num_balls = balls
         self.ball_list = []
         self.num_dots = dots
         self.dots_lst = []
-        self.t = 0.0
-        self.pq = []
-        self.HZ = 4
         self.dt = 0.2
         turtle.hideturtle()
         turtle.speed(0)
@@ -49,6 +44,8 @@ class RunGame:
         turtle.hideturtle()
         self.screen_ui = turtle.Screen()
         self.start = False
+        self.switch = 0
+        self.start_time = time.time()
 
     def _random_no_0(self):
         while True:
@@ -79,12 +76,12 @@ class RunGame:
     def in_game_ui(self):
         self.ui.color("black")
         self.ui.goto(180, 240)
-        self.ui.write(f"Score: {self.score}", font=("Comic Sans MS", 30, "normal"))
+        self.ui.write(f"Score: {self.__score}", font=("Comic Sans MS", 30, "normal"))
         self.ui.goto(-350, 240)
         self.ui.color("DarkRed")
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
 
-    def run(self):
+    def __run(self):
         self.player.be_immune()  # let player be immune at the start
         self.player.body.showturtle()
         self.__draw_border()
@@ -107,7 +104,7 @@ class RunGame:
             # check dot hit
             for d in self.dots_lst:
                 if self.player.distance(d) <= (d.radius + 10):
-                    self.score += 1
+                    self.__score += 1
                     self.dots_lst.remove(d)
             # generate new dot
             if len(self.dots_lst) <= 8:
@@ -139,7 +136,8 @@ class RunGame:
                 break
             self.player.stop_immune()
 
-        print(f"score: {self.score}")
+        self.__score_lst.append(self.__score)
+        self.game_over()
 
     def set_start(self):
         self.start = True
@@ -153,24 +151,27 @@ class RunGame:
         self.ui.color(color)
         self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
 
+    def switch_color(self):
+        if time.time() - self.start_time >= 0.5:
+            self.start_time = time.time()
+            if self.switch == 0:
+                self.switch = 1
+            else:
+                self.switch = 0
+
     def title(self):
         colorlst = ["green", "green3"]
         turtle.hideturtle()
         self.player.screen.listen()
         self.player.body.hideturtle()
-        st = time.time()
+        self.start_time = time.time()
         c = 0
         while True:
             # Changing color off ui so cool aa ><
-            if time.time() - st >= 0.5:
-                st = time.time()
-                if c == 0:
-                    c = 1
-                else:
-                    c = 0
+            self.switch_color()
             turtle.clear()
             self.ui.clear()
-            self.title_ui(colorlst[c])
+            self.title_ui(colorlst[self.switch])
             turtle.update()  # don't dare u remove this line this is life
             turtle.onkey(self.set_start, "space")  # press space to start
             if self.start:
@@ -180,9 +181,10 @@ class RunGame:
         self.tutorial()
 
     def tutorial(self):
+        self.player.reset_movement()
         turtle.hideturtle()
         colorlst = ["green", "green3"]
-        st = time.time()
+        self.start_time = time.time()
         c = 0
         while True:
             # title
@@ -261,25 +263,46 @@ class RunGame:
                           font=("Courier", 20, "bold"), align="left")
 
             # Interesting start button
-            if time.time() - st >= 0.5:
-                st = time.time()
-                if c == 0:
-                    c = 1
-                else:
-                    c = 0
+            self.switch_color()
             self.ui.goto(0, -230)
-            self.ui.color(colorlst[c])
+            self.ui.color(colorlst[self.switch])
             self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
 
-            turtle.update()  # don't dare u remove this line this is life
+            turtle.update()  # don't dare u remove this line. this is life
 
             turtle.onkey(self.set_start, "space")  # press space to start
             if self.start:
                 break
         self.ui.clear()
-        self.run()
+        self.__run()
+
+    def game_over(self):
+        score = self.__score
+        highest = max(self.__score_lst)
+        color_lst = ["DeepPink4", "DeepPink3"]
+        self.start_time = time.time()
+        self.__score = 0
+        while True:
+            self.ui.color("black")
+            self.ui.goto(0, 80)
+            self.ui.write("GAME OVER", font=("Courier", 50, "bold"), align="center")
+
+            self.ui.color("DarkRed")
+            self.ui.goto(0, 10)
+            self.ui.write(f"Score: {score}", font=("Courier", 30, "bold"), align="center")
+
+            self.ui.goto(0, -20)
+            self.ui.write(f"High Score: {highest}", font=("Courier", 20, "bold"), align="center")
+
+            self.switch_color()
+            self.ui.color(color_lst[self.switch])
+            self.ui.goto(0, -100)
+            self.ui.write(f"press SPACE to restart", font=("Courier", 20, "bold"), align="center")
+
+            turtle.update()  # don't delete this. this is life
 
 
 run = RunGame()
 run.title()
+# run.game_over()
 turtle.done()
