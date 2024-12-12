@@ -27,20 +27,26 @@ class Ball:
         turtle.circle(self.size)
         turtle.end_fill()
 
-    def bounce_off_vertical_wall(self):
-        self.vx = -self.vx
-        self.count += 1
+    # def bounce_off_vertical_wall(self):
+    #     self.vx = -self.vx
+    #     self.count += 1
+    #
+    # def bounce_off_horizontal_wall(self):
+    #     self.vy = -self.vy
+    #     self.count += 1
 
-    def bounce_off_horizontal_wall(self):
-        self.vy = -self.vy
-        self.count += 1
+    def bounce_wall(self):
+        if self.x >= self.canvas_width - self.size or self.x <=  -self.canvas_width + self.size:
+            self.vx = -self.vx
+        if self.y >= self.canvas_height - self.size or self.y <= -self.canvas_height + self.size:
+            self.vy = -self.vy
 
     def bounce_off(self, that):
         dx = that.x - self.x
         dy = that.y - self.y
         dvx = that.vx - self.vx
         dvy = that.vy - self.vy
-        dvdr = dx * dvx + dy * dvy;  # dv dot dr
+        dvdr = dx * dvx + dy * dvy  # dv dot dr
         dist = self.size + that.size  # distance between particle centers at collison
 
         # magnitude of normal force
@@ -72,50 +78,54 @@ class Ball:
         self.x += self.vx * dt
         self.y += self.vy * dt
 
-    def time_to_hit(self, that):
-        if self is that:
-            return math.inf
-        dx = that.x - self.x
-        dy = that.y - self.y
-        dvx = that.vx - self.vx
-        dvy = that.vy - self.vy
-        dvdr = dx * dvx + dy * dvy
-        if dvdr > 0:
-            return math.inf
-        dvdv = dvx * dvx + dvy * dvy
-        if dvdv == 0:
-            return math.inf
-        drdr = dx * dx + dy * dy
-        sigma = self.size + that.size
-        d = (dvdr * dvdr) - dvdv * (drdr - sigma * sigma)
-        # if drdr < sigma*sigma:
-        # print("overlapping particles")
-        if d < 0:
-            return math.inf
-        t = -(dvdr + math.sqrt(d)) / dvdv
 
-        # should't happen, but seems to be needed for some extreme inputs
-        # (floating-point precision when dvdv is close to 0, I think)
-        if t <= 0:
-            return math.inf
 
-        return t
 
-    def time_to_hit_vertical_wall(self):
-        if self.vx > 0:
-            return (self.canvas_width - self.x - self.size) / self.vx
-        elif self.vx < 0:
-            return (self.canvas_width + self.x - self.size) / (-self.vx)
-        else:
-            return math.inf
 
-    def time_to_hit_horizontal_wall(self):
-        if self.vy > 0:
-            return (self.canvas_height - self.y - self.size) / self.vy
-        elif self.vy < 0:
-            return (self.canvas_height + self.y - self.size) / (-self.vy)
-        else:
-            return math.inf
+    # def time_to_hit(self, that):
+    #     if self is that:
+    #         return math.inf
+    #     dx = that.x - self.x
+    #     dy = that.y - self.y
+    #     dvx = that.vx - self.vx
+    #     dvy = that.vy - self.vy
+    #     dvdr = dx * dvx + dy * dvy
+    #     if dvdr > 0:
+    #         return math.inf
+    #     dvdv = dvx * dvx + dvy * dvy
+    #     if dvdv == 0:
+    #         return math.inf
+    #     drdr = dx * dx + dy * dy
+    #     sigma = self.size + that.size
+    #     d = (dvdr * dvdr) - dvdv * (drdr - sigma * sigma)
+    #     # if drdr < sigma*sigma:
+    #     # print("overlapping particles")
+    #     if d < 0:
+    #         return math.inf
+    #     t = -(dvdr + math.sqrt(d)) / dvdv
+    #
+    #     # should't happen, but seems to be needed for some extreme inputs
+    #     # (floating-point precision when dvdv is close to 0, I think)
+    #     if t <= 0:
+    #         return math.inf
+    #
+    #     return t
+    #
+    # def time_to_hit_vertical_wall(self):
+    #     if self.vx > 0:
+    #         return (self.canvas_width - self.x - self.size) / self.vx
+    #     elif self.vx < 0:
+    #         return (self.canvas_width + self.x - self.size) / (-self.vx)
+    #     else:
+    #         return math.inf
+    #
+    # def time_to_hit_horizontal_wall(self):
+    #     if self.vy > 0:
+    #         return (self.canvas_height - self.y - self.size) / self.vy
+    #     elif self.vy < 0:
+    #         return (self.canvas_height + self.y - self.size) / (-self.vy)
+    #     else:
+    #         return math.inf
 # turtle.speed(0)
 # turtle.tracer(0)
 # turtle.hideturtle()
