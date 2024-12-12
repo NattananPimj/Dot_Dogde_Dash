@@ -18,6 +18,7 @@ class RunGame:
         self.t = 0.0
         self.pq = []
         self.HZ = 4
+        self.dt = 0.2
         turtle.speed(0)
         turtle.tracer(0)
         turtle.hideturtle()
@@ -31,7 +32,7 @@ class RunGame:
             ball = Ball.Ball(self.ball_rad,
                              random.randint(-self.canvas_width + self.ball_rad, self.canvas_width - self.ball_rad),
                              random.randint(-self.canvas_height + self.ball_rad, self.canvas_height - self.ball_rad),
-                             10*random.randint(-1, 1), 10*random.randint(-1, 1), i,
+                             10 * self._random_no_0(), 10 * self._random_no_0(), i,
                              self.canvas_width, self.canvas_height)
             self.ball_list.append(ball)
         for i in range(self.num_dots):
@@ -39,6 +40,15 @@ class RunGame:
                         random.randint(-self.canvas_height + 20, self.canvas_height - 20))
             self.dos_lst.append(d)
         self.player.be_immune()
+        self.ui = turtle.Turtle()
+        self.ui.hideturtle()
+        self.ui.penup()
+
+    def _random_no_0(self):
+        while True:
+            value = random.uniform(-1, 1)
+            if value != 0:
+                return value
 
     def __draw_border(self):
         turtle.hideturtle()
@@ -60,6 +70,14 @@ class RunGame:
         for ball in self.ball_list:
             ball.draw()
 
+    def _draw_ui(self):
+        self.ui.color("black")
+        self.ui.goto(200, 240)
+        self.ui.write(f"Score: {self.score}", font=("Comic Sans MS", 30, "normal"))
+        self.ui.goto(-350, 240)
+        self.ui.color("DarkRed")
+        self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
+
     def run(self):
         self.__draw_border()
         turtle.hideturtle()
@@ -70,13 +88,16 @@ class RunGame:
         self.player.screen.listen()
 
         while True:
+            self._draw_ui()
             self.player.check_wall()
             self.player.body.showturtle()
             self.player.movement()
             self.player.undash()
+
             for ball in self.ball_list:
-                ball.move(0.1)
-            #check hits
+                ball.move(self.dt)
+
+            # check hit
             for d in self.dos_lst:
                 if self.player.distance(d) <= (d.radius + 10):
                     self.score += 1
@@ -98,11 +119,12 @@ class RunGame:
                     if self.player.life == 0:
                         print(f"score: {self.score}")
                         self.player.disable_movement()
+                        self.player.body.color("red")
                         # sys.exit()  # just close it
             self.player.stop_immune()
 
-
             turtle.clear()
+            self.ui.clear()
             self.__redraw()
 
 
