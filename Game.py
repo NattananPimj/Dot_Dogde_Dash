@@ -7,7 +7,9 @@ import time
 
 
 class RunGame:
-    def __init__(self, balls=5, dots=10, size=0.1, speed=10, scorelst=[0]):
+    def __init__(self, balls=5, dots=10, size=0.1, speed=10, scorelst=None):
+        if scorelst is None:
+            scorelst = [0]
         self.__score = 0
         self.__score_lst = scorelst
         self.num_balls = balls
@@ -166,7 +168,6 @@ class RunGame:
         self.player.screen.listen()
         self.player.body.hideturtle()
         self.start_time = time.time()
-        c = 0
         while True:
             # Changing color off ui so cool aa ><
             self.switch_color()
@@ -186,7 +187,6 @@ class RunGame:
         turtle.hideturtle()
         colorlst = ["green", "green3"]
         self.start_time = time.time()
-        c = 0
         while True:
             # title
             turtle.clear()
@@ -314,10 +314,9 @@ class RunGame:
         turtle.clear()
         self.ui.clear()
         del self.player
-        self.__init__(scorelst= self.__score_lst)
+        self.__init__(scorelst=self.__score_lst)
 
 
 run = RunGame()
 run.title()
-# run.game_over()
 turtle.done()

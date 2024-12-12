@@ -115,5 +115,3 @@ class Player:
             self.keys[key] = False
         self.move = True
 
-# for run part
-# player = Player(400, 300)
