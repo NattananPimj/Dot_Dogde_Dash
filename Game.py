@@ -154,7 +154,7 @@ class RunGame:
         self.ui.color(color)
         self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
 
-    def title(self):  # TODO this shit is broken fixed it idiot
+    def title(self):
         colorlst = ["green", "green3"]
         self.__draw_border()
         turtle.hideturtle()
