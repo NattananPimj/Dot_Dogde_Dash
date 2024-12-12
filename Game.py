@@ -169,5 +169,6 @@ class RunGame:
 
 run = RunGame()
 # run.title()
+# title not done yet run by run.run(
 run.run()
 turtle.done()
