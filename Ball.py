@@ -15,6 +15,8 @@ class Ball:
         self.id = id
         self.canvas_width = width
         self.canvas_height = height
+        self.moving = True
+        turtle.hideturtle()
 
     def draw(self):
         # draw a circle of radius equals to size centered at (x, y) and paint it with color
@@ -75,8 +77,10 @@ class Ball:
         return d
 
     def move(self, dt):
-        self.x += self.vx * dt
-        self.y += self.vy * dt
+        if self.moving:
+            self.x += self.vx * dt
+            self.y += self.vy * dt
+
 
 
 
