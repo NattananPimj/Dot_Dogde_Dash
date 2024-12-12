@@ -1,3 +1,4 @@
+import sys
 import turtle
 import Ball
 import Player
@@ -9,6 +10,7 @@ import dot
 
 class RunGame:
     def __init__(self, balls=5, dots=10):
+        self.score = 0
         self.num_balls = balls
         self.ball_list = []
         self.num_dots = dots
@@ -29,13 +31,14 @@ class RunGame:
             ball = Ball.Ball(self.ball_rad,
                              random.randint(-self.canvas_width + self.ball_rad, self.canvas_width - self.ball_rad),
                              random.randint(-self.canvas_height + self.ball_rad, self.canvas_height - self.ball_rad),
-                             random.randint(-10, 10), random.randint(-10, 10), i,
+                             10*random.randint(-1, 1), 10*random.randint(-1, 1), i,
                              self.canvas_width, self.canvas_height)
             self.ball_list.append(ball)
         for i in range(self.num_dots):
             d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
                         random.randint(-self.canvas_height + 20, self.canvas_height - 20))
             self.dos_lst.append(d)
+        self.player.be_immune()
 
     def __draw_border(self):
         turtle.hideturtle()
@@ -58,7 +61,6 @@ class RunGame:
             ball.draw()
 
     def run(self):
-
         self.__draw_border()
         turtle.hideturtle()
         for ball in self.ball_list:
@@ -73,16 +75,33 @@ class RunGame:
             self.player.movement()
             self.player.undash()
             for ball in self.ball_list:
-                ball.move(0.01)
+                ball.move(0.1)
+            #check hits
             for d in self.dos_lst:
                 if self.player.distance(d) <= (d.radius + 10):
-                    self.player.score += 1
-                    print(self.player.score)
+                    self.score += 1
                     self.dos_lst.remove(d)
             if len(self.dos_lst) <= 8:
                 d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
                             random.randint(-self.canvas_height + 20, self.canvas_height - 20))
                 self.dos_lst.append(d)
+            # ball collision
+            for ball in self.ball_list:
+                ball.bounce_wall()
+                # check hit player
+                if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
+                        and self.player.life > 0):
+                    self.player.life -= 1
+                    print(self.player.life)
+                    if self.player.life > 0:
+                        self.player.be_immune()
+                    if self.player.life == 0:
+                        print(f"score: {self.score}")
+                        self.player.disable_movement()
+                        # sys.exit()  # just close it
+            self.player.stop_immune()
+
+
             turtle.clear()
             self.__redraw()
 
