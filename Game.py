@@ -7,9 +7,9 @@ import time
 
 
 class RunGame:
-    def __init__(self, balls=5, dots=10, size=0.1, speed=10):
+    def __init__(self, balls=5, dots=10, size=0.1, speed=10, scorelst=[0]):
         self.__score = 0
-        self.__score_lst = [0]
+        self.__score_lst = scorelst
         self.num_balls = balls
         self.ball_list = []
         self.num_dots = dots
@@ -314,7 +314,7 @@ class RunGame:
         turtle.clear()
         self.ui.clear()
         del self.player
-        self.__init__()
+        self.__init__(scorelst= self.__score_lst)
 
 
 run = RunGame()
