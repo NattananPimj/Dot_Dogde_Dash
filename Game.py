@@ -82,6 +82,7 @@ class RunGame:
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
 
     def __run(self):
+        self.player.life = 3
         self.player.be_immune()  # let player be immune at the start
         self.player.body.showturtle()
         self.__draw_border()
@@ -277,6 +278,7 @@ class RunGame:
         self.__run()
 
     def game_over(self):
+        self.start = False
         score = self.__score
         highest = max(self.__score_lst)
         color_lst = ["DeepPink4", "DeepPink3"]
@@ -299,7 +301,20 @@ class RunGame:
             self.ui.goto(0, -100)
             self.ui.write(f"press SPACE to restart", font=("Courier", 20, "bold"), align="center")
 
+            turtle.onkey(self.set_start, "space")  # press space to start
+            if self.start:
+                break
+
             turtle.update()  # don't delete this. this is life
+        self.resetting()
+        self.__run()
+
+    def resetting(self):
+        self.player.body.hideturtle()  # hiding the body. hehehe
+        turtle.clear()
+        self.ui.clear()
+        del self.player
+        self.__init__()
 
 
 run = RunGame()
