@@ -7,6 +7,7 @@ import dot
 
 class Player:
     def __init__(self, width, height):
+        self.move = True
         self.body = turtle.Turtle()
         self.body.shape('triangle')
         self.body.color('blue')
@@ -28,7 +29,7 @@ class Player:
         self.immunetime = 0
 
     def movement(self):
-        if self.keys["w"] and (not self.keys["upwall"]):
+        if self.keys["w"] and (not self.keys["upwall"]) and self.move:
             self.body.goto(self.body.xcor(), self.body.ycor() + self.speed)
         if self.keys["s"] and (not self.keys["downwall"]):
             self.body.goto(self.body.xcor(), self.body.ycor() - self.speed)
@@ -42,25 +43,26 @@ class Player:
         self.keys[key] = value
 
     def check_wall(self):
-        if self.body.xcor() >= self.canvas_width - 15:
-            self.keys["rightwall"] = True
-        else:
-            self.keys["rightwall"] = False
+        if self.move:
+            if self.body.xcor() >= self.canvas_width - 15:
+                self.keys["rightwall"] = True
+            else:
+                self.keys["rightwall"] = False
 
-        if self.body.xcor() <= -self.canvas_width + 15:
-            self.keys["leftwall"] = True
-        else:
-            self.keys["leftwall"] = False
+            if self.body.xcor() <= -self.canvas_width + 15:
+                self.keys["leftwall"] = True
+            else:
+                self.keys["leftwall"] = False
 
-        if self.body.ycor() >= self.canvas_height - 17:
-            self.keys["upwall"] = True
-        else:
-            self.keys["upwall"] = False
+            if self.body.ycor() >= self.canvas_height - 17:
+                self.keys["upwall"] = True
+            else:
+                self.keys["upwall"] = False
 
-        if self.body.ycor() <= -self.canvas_height + 13:
-            self.keys["downwall"] = True
-        else:
-            self.keys["downwall"] = False
+            if self.body.ycor() <= -self.canvas_height + 13:
+                self.keys["downwall"] = True
+            else:
+                self.keys["downwall"] = False
 
     def dash(self, status):
         self.speed = self.__default_speed + (status * 2)
@@ -105,12 +107,13 @@ class Player:
         k = list(self.keys.keys())[4:8]
         for key in k:
             self.keys[key] = True
+        self.move = False
 
     def reset_movement(self):
         k = list(self.keys.keys())
         for key in k:
             self.keys[key] = False
-
+        self.move = True
 
 # for run part
-player = Player(400, 300)
+# player = Player(400, 300)
