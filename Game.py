@@ -105,10 +105,7 @@ class RunGame:
             self.player.undash()
 
             for ball in self.ball_list:
-                ball.move(self.dt)
-                if self.__score >= 50:
-                    ball.vx *= 1.05
-                    ball.vy *= 1.05
+                pass
 
             # check dot hit
             for d in self.dots_lst:
@@ -122,6 +119,11 @@ class RunGame:
                 self.dots_lst.append(d)
             # ball collision
             for ball in self.ball_list:
+                ball.move(self.dt)
+                #speed up as you go high
+                if self.__score >= 50:
+                    ball.vx += (self.__score-50)*0.001/5
+                    ball.vy += (self.__score-50)*0.001/5
                 ball.bounce_wall()
                 # check hit player
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
