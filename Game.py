@@ -5,6 +5,31 @@ import random
 import dot
 import time
 
+# fixable variable
+'''
+The game may run differently depends on computer, if you felt the balls of player move to fast or slow than it should,
+you can adjust them at BALL_SPEED and PLAYER_SPEED, respectively
+
+If you want more difficulty, set this up
+
+Medium MODE:
+NUM_DOTS = 10
+NUM_BALL = 10
+SIZE = 0.05
+
+Hard MODE:
+NUM_DOTS = 10
+NUM_BALL = 15 or more
+SIZE = 0.05
+BALL_SPEED = 20
+
+'''
+NUM_BALL = 5  # default 5
+NUM_DOTS = 15  # default = 10
+SIZE = 0.1  # default = 0.1
+BALL_SPEED = 10  # default = 10
+PLAYER_SPEED = 0.8  # default = 0.8
+
 
 def _random_no_0():
     while True:
@@ -14,7 +39,7 @@ def _random_no_0():
 
 
 class RunGame:
-    def __init__(self, balls=5, dots=10, size=0.1, speed=10, scorelst=None):
+    def __init__(self, balls=5, dots=10, size=0.1, speed=10, player_speed=0.8, scorelst=None):
         if scorelst is None:
             scorelst = [0]
         self.__score = 0
@@ -30,7 +55,7 @@ class RunGame:
         turtle.colormode(255)
         self.canvas_width = turtle.screensize()[0]
         self.canvas_height = turtle.screensize()[1]
-        self.player = Player.Player(self.canvas_width, self.canvas_height)
+        self.player = Player.Player(self.canvas_width, self.canvas_height, player_speed)
         print(self.canvas_width, self.canvas_height)
         self.ball_rad = int(size * self.canvas_height)
         # adding ball to the list
@@ -313,6 +338,6 @@ class RunGame:
         self.__init__(scorelst=self.__score_lst)
 
 
-run = RunGame()
+run = RunGame(NUM_BALL, NUM_DOTS, SIZE, BALL_SPEED, PLAYER_SPEED)
 run.title()
 turtle.done()
