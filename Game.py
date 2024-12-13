@@ -120,10 +120,10 @@ class RunGame:
             # ball collision
             for ball in self.ball_list:
                 ball.move(self.dt)
-                #speed up as you go high
+                # speed up as you go high
                 if self.__score >= 50:
-                    ball.vx += (self.__score-50)*0.001/5
-                    ball.vy += (self.__score-50)*0.001/5
+                    ball.vx += (self.__score - 50) * 0.001 / 5
+                    ball.vy += (self.__score - 50) * 0.001 / 5
                 ball.bounce_wall()
                 # check hit player
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
