@@ -80,9 +80,12 @@ class RunGame:
         self.ui.color("black")
         self.ui.goto(180, 240)
         self.ui.write(f"Score: {self.__score}", font=("Comic Sans MS", 30, "normal"))
+        self.ui.goto(180, 310)
+        self.ui.write(f"High Score: {max(self.__score_lst)}", font=("Comic Sans MS", 20, "normal"))
         self.ui.goto(-350, 240)
         self.ui.color("DarkRed")
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
+
 
     def __run(self):
         self.player.life = 3
