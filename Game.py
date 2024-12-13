@@ -14,7 +14,8 @@ def _random_no_0():
 
 
 class RunGame:
-    def __init__(self, balls=5, dots=10, size=0.1, speed=10, player_speed=0.8, scorelst=None):
+    def __init__(self, balls=5, dots=10, size=0.1, speed=10, player_speed: float = 0.8, scorelst=None):
+        self.speed = speed
         if scorelst is None:
             scorelst = [0]
         self.__score = 0
@@ -30,9 +31,11 @@ class RunGame:
         turtle.colormode(255)
         self.canvas_width = turtle.screensize()[0]
         self.canvas_height = turtle.screensize()[1]
-        self.player = Player.Player(self.canvas_width, self.canvas_height, player_speed)
+        self.player_speed = player_speed
+        self.player = Player.Player(self.canvas_width, self.canvas_height, self.player_speed)
         print(self.canvas_width, self.canvas_height)
-        self.ball_rad = int(size * self.canvas_height)
+        self.size = size
+        self.ball_rad = int(self.size * self.canvas_height)
         # adding ball to the list
         for i in range(self.num_balls):
             ball = Ball.Ball(self.ball_rad,
@@ -86,6 +89,23 @@ class RunGame:
         self.ui.color("DarkRed")
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
 
+    def check_dot_hit(self):
+        for d in self.dots_lst:
+            if self.player.distance(d) <= (d.radius + 10):
+                self.__score += 1
+                self.dots_lst.remove(d)
+
+    def generate_dots(self):
+        if len(self.dots_lst) <= self.num_dots - 2:
+            d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
+                        random.randint(-self.canvas_height + 20, self.canvas_height - 20))
+            self.dots_lst.append(d)
+
+    def speed_up(self, ball, score):
+        if self.__score >= score:
+            ball.vx += (self.__score - 50) * 0.001 / 5
+            ball.vy += (self.__score - 50) * 0.001 / 5
+
     def __run(self):
         self.player.life = 3
         self.player.be_immune()  # let player be immune at the start
@@ -99,31 +119,20 @@ class RunGame:
         self.player.screen.listen()
 
         while True:
+            # PLAYER
             self.player.check_wall()
             self.player.body.showturtle()
             self.player.movement()
             self.player.undash()
+            # DOTS
+            self.check_dot_hit()
+            self.generate_dots()
 
-            for ball in self.ball_list:
-                pass
-
-            # check dot hit
-            for d in self.dots_lst:
-                if self.player.distance(d) <= (d.radius + 10):
-                    self.__score += 1
-                    self.dots_lst.remove(d)
-            # generate new dot
-            if len(self.dots_lst) <= 8:
-                d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
-                            random.randint(-self.canvas_height + 20, self.canvas_height - 20))
-                self.dots_lst.append(d)
             # ball collision
             for ball in self.ball_list:
                 ball.move(self.dt)
                 # speed up as you go high
-                if self.__score >= 50:
-                    ball.vx += (self.__score - 50) * 0.001 / 5
-                    ball.vy += (self.__score - 50) * 0.001 / 5
+                self.speed_up(ball, 50)
                 ball.bounce_wall()
                 # check hit player
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
@@ -138,7 +147,6 @@ class RunGame:
                             b.moving = False
                         self.player.body.color("red")
                         break
-                        # sys.exit()  # just close it
             turtle.clear()
             self.ui.clear()
             self.in_game_ui()
@@ -151,7 +159,7 @@ class RunGame:
         self.game_over()
 
     def set_start(self):
-        self.start = True
+        self.start = True  #for turtle to use
 
     def title_ui(self):
         turtle.hideturtle()
@@ -189,7 +197,6 @@ class RunGame:
             self.title_ui()
             self.press_space(color_lst, 0, 30)
             turtle.update()  # don't dare u remove this line this is life
-            turtle.onkey(self.set_start, "space")  # press space to start
             if self.start:
                 break
         self.ui.clear()
@@ -317,4 +324,5 @@ class RunGame:
         turtle.clear()
         self.ui.clear()
         del self.player
-        self.__init__(scorelst=self.__score_lst)
+        self.__init__(self.num_balls, self.num_dots, self.size, self.speed, self.player_speed,
+                      scorelst=self.__score_lst)
