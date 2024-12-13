@@ -86,7 +86,6 @@ class RunGame:
         self.ui.color("DarkRed")
         self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
 
-
     def __run(self):
         self.player.life = 3
         self.player.be_immune()  # let player be immune at the start
@@ -107,6 +106,9 @@ class RunGame:
 
             for ball in self.ball_list:
                 ball.move(self.dt)
+                if self.__score >= 50:
+                    ball.vx *= 1.05
+                    ball.vy *= 1.05
 
             # check dot hit
             for d in self.dots_lst:
@@ -314,6 +316,3 @@ class RunGame:
         self.ui.clear()
         del self.player
         self.__init__(scorelst=self.__score_lst)
-
-
-
