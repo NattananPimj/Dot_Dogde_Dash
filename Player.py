@@ -81,11 +81,7 @@ class Player:
         self.screen.onkeyrelease(lambda: self.c_keys("a", False), "a")
         self.screen.onkeypress(lambda: self.c_keys("d", True), "d")
         self.screen.onkeyrelease(lambda: self.c_keys("d", False), "d")
-        # hope user don't hold space plssss just don't I don't know how to make them properly this shit is just a
-        # witchcraft. this shouldn't be for speeding
         self.screen.onkeypress(lambda: self.dash(True), "space")
-        # self.screen.onkeypress(lambda: self.dash(True), "space")
-        # self.screen.onkeyrelease(lambda: self.dash(False), "space")
 
     def distance(self, that):
         return math.sqrt((self.body.xcor() - that.x) ** 2 + (self.body.ycor() - that.y) ** 2)

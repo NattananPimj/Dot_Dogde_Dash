@@ -14,12 +14,13 @@ def _random_no_0():
 
 
 class RunGame:
-    def __init__(self, balls=5, dots=10, size=0.1, speed=10, player_speed: float = 0.8, scorelst=None):
+    def __init__(self, balls=5, dots=10, size=0.1,
+                 speed=10, player_speed: float = 0.8, score_lst=None):
         self.speed = speed
-        if scorelst is None:
-            scorelst = [0]
+        if score_lst is None:
+            score_lst = [0]
         self.__score = 0
-        self.__score_lst = scorelst
+        self.__score_lst = score_lst
         self.num_balls = balls
         self.ball_list = []
         self.num_dots = dots
@@ -325,4 +326,4 @@ class RunGame:
         self.ui.clear()
         del self.player
         self.__init__(self.num_balls, self.num_dots, self.size, self.speed, self.player_speed,
-                      scorelst=self.__score_lst)
+                      score_lst=self.__score_lst)
