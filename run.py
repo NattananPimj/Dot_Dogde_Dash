@@ -19,6 +19,9 @@ NUM_BALL = 15 or more
 SIZE = 0.05
 BALL_SPEED = 20
 
+DEV NOTE: If you want to add more ball, I suggest to increase the player speed
+
+DISCLAIMER: IT WORK ON MY COMPUTER AND TWO OF MY FRIENDS' one pycharm, one vs code.
 '''
 NUM_BALL = 5  # default 5
 NUM_DOTS = 15  # default = 15
