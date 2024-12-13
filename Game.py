@@ -6,6 +6,13 @@ import dot
 import time
 
 
+def _random_no_0():
+    while True:
+        value = random.uniform(-1, 1)
+        if value != 0:
+            return value
+
+
 class RunGame:
     def __init__(self, balls=5, dots=10, size=0.1, speed=10, scorelst=None):
         if scorelst is None:
@@ -31,7 +38,7 @@ class RunGame:
             ball = Ball.Ball(self.ball_rad,
                              random.randint(-self.canvas_width + self.ball_rad, self.canvas_width - self.ball_rad),
                              random.randint(-self.canvas_height + self.ball_rad, self.canvas_height - self.ball_rad),
-                             speed * self._random_no_0(), speed * self._random_no_0(),
+                             speed * _random_no_0(), speed * _random_no_0(),
                              self.canvas_width, self.canvas_height)
             self.ball_list.append(ball)
         # adding dots
@@ -48,12 +55,6 @@ class RunGame:
         self.start = False
         self.switch = 0
         self.start_time = time.time()
-
-    def _random_no_0(self):
-        while True:
-            value = random.uniform(-1, 1)
-            if value != 0:
-                return value
 
     def __draw_border(self):
         turtle.hideturtle()
@@ -145,14 +146,11 @@ class RunGame:
     def set_start(self):
         self.start = True
 
-    def title_ui(self, color="green3"):
+    def title_ui(self):
         turtle.hideturtle()
         self.ui.color("black")
         self.ui.goto(0, 50)
         self.ui.write("DOT DASH DODGE", font=("Courier", 50, "bold"), align="center")
-        self.ui.goto(0, 0)
-        self.ui.color(color)
-        self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
 
     def switch_color(self):
         if time.time() - self.start_time >= 0.5:
@@ -162,8 +160,16 @@ class RunGame:
             else:
                 self.switch = 0
 
+    def press_space(self, color_lst: list, y, size=20):
+        self.switch_color()
+        self.ui.color(color_lst[self.switch])
+        self.ui.goto(0, y)
+        self.ui.write(f"press SPACE to restart", font=("Courier", size, "bold"), align="center")
+
+        turtle.onkey(self.set_start, "space")  # press space to start
+
     def title(self):
-        colorlst = ["green", "green3"]
+        color_lst = ["green", "green3"]
         turtle.hideturtle()
         self.player.screen.listen()
         self.player.body.hideturtle()
@@ -173,7 +179,8 @@ class RunGame:
             self.switch_color()
             turtle.clear()
             self.ui.clear()
-            self.title_ui(colorlst[self.switch])
+            self.title_ui()
+            self.press_space(color_lst, 0, 30)
             turtle.update()  # don't dare u remove this line this is life
             turtle.onkey(self.set_start, "space")  # press space to start
             if self.start:
@@ -263,15 +270,10 @@ class RunGame:
             self.ui.write("You Have 3 Life, GOODLUCK.",
                           font=("Courier", 20, "bold"), align="left")
 
-            # Interesting start button
-            self.switch_color()
-            self.ui.goto(0, -230)
-            self.ui.color(colorlst[self.switch])
-            self.ui.write("press Space to Start", font=("Courier", 30, "bold"), align="center")
+            self.press_space(colorlst, -230, 30)
 
             turtle.update()  # don't dare u remove this line. this is life
 
-            turtle.onkey(self.set_start, "space")  # press space to start
             if self.start:
                 break
         self.ui.clear()
@@ -295,13 +297,7 @@ class RunGame:
 
             self.ui.goto(0, -20)
             self.ui.write(f"High Score: {highest}", font=("Courier", 20, "bold"), align="center")
-
-            self.switch_color()
-            self.ui.color(color_lst[self.switch])
-            self.ui.goto(0, -100)
-            self.ui.write(f"press SPACE to restart", font=("Courier", 20, "bold"), align="center")
-
-            turtle.onkey(self.set_start, "space")  # press space to start
+            self.press_space(color_lst, -100)
             if self.start:
                 break
 
