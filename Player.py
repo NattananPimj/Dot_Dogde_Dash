@@ -11,7 +11,6 @@ class Player:
         self.body.color('blue')
         self.body.penup()
         self.body.speed(1)
-        self.status = True
         self.life = 3
         self.__default_speed = speed
         self.speed = self.__default_speed

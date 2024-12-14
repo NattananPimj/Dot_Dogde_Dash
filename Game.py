@@ -161,7 +161,7 @@ class RunGame:
         self.game_over()
 
     def set_start(self):
-        self.start = True  #for turtle to use
+        self.start = True  # for turtle to use
 
     def title_ui(self):
         turtle.hideturtle()
