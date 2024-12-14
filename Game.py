@@ -137,7 +137,7 @@ class RunGame:
                 self.speed_up(ball)
                 ball.bounce_wall()
                 # check hit player
-                if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
+                if (self.player.distance(ball) <= (ball.radius + 10) and not self.player.immunity
                         and self.player.life > 0):
                     self.player.decrease_life()
                     if self.player.life > 0:
