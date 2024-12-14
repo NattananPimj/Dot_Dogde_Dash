@@ -3,7 +3,7 @@ import turtle
 
 # fixable variable
 '''
-DOT DODGE DASH (Modifier) : if does not want to modify anything, just run.
+DOT DODGE DASH (Modifier) : if does not want to modify anything, just run. 
 
 
 The game may run differently depends on computer, if you felt the balls of player move to fast or slow than it should,
