@@ -13,7 +13,16 @@ In this game, player is able to control the **blue triangle** and try to dodge t
 - The tutorial is given in game
 
 ## Usage
-
+- When First run code, User will see the Title screen
+  ![Title_screen.png](Pic_and_Vid/Title_screen.png)
+- When user press SPACE, They will see the instruction
+  ![Instruction_screen.png](Pic_and_Vid/Instruction_screen.png)
+- The user can control player and move around freely using WASD, and space bar as dash
+  , VDO: https://youtu.be/o2cmxuTKfRo
+- When the player hit red balls, They will lose life and be immune for 2 second
+  , VDO: https://youtu.be/_0NPk_BuHqs
+- When the player lose their last life, they die, game over and can choose to play again
+  ![Game_over_screen.png](Pic_and_Vid/Game_over_screen.png)
 
 ## Project design and implementation
 
