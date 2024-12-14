@@ -15,7 +15,7 @@ def _random_no_0():
 
 class RunGame:
     def __init__(self, balls=5, dots=10, size=0.1,
-                 speed=10, player_speed: float = 0.8, score_lst=None):
+                 speed=10, player_speed: float = 0.8, score_diff=50, score_lst=None):
         self.speed = speed
         if score_lst is None:
             score_lst = [0]
@@ -59,6 +59,7 @@ class RunGame:
         self.start = False
         self.switch = 0
         self.start_time = time.time()
+        self.speed_up_after = score_diff
 
     def __draw_border(self):
         turtle.hideturtle()
@@ -102,10 +103,10 @@ class RunGame:
                         random.randint(-self.canvas_height + 20, self.canvas_height - 20))
             self.dots_lst.append(d)
 
-    def speed_up(self, ball, score):
-        if self.__score >= score:
-            ball.vx += (self.__score - 50) * 0.001 / 5
-            ball.vy += (self.__score - 50) * 0.001 / 5
+    def speed_up(self, ball):
+        if self.__score >= self.speed_up_after:
+            ball.vx += (self.__score - self.speed_up_after) * 0.001 / 5
+            ball.vy += (self.__score - self.speed_up_after) * 0.001 / 5
 
     def __run(self):
         self.player.life = 3
@@ -133,7 +134,7 @@ class RunGame:
             for ball in self.ball_list:
                 ball.move(self.dt)
                 # speed up as you go high
-                self.speed_up(ball, 50)
+                self.speed_up(ball)
                 ball.bounce_wall()
                 # check hit player
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
@@ -325,5 +326,5 @@ class RunGame:
         turtle.clear()
         self.ui.clear()
         del self.player
-        self.__init__(self.num_balls, self.num_dots, self.size, self.speed, self.player_speed,
+        self.__init__(self.num_balls, self.num_dots, self.size, self.speed, self.player_speed, self.speed_up_after,
                       score_lst=self.__score_lst)

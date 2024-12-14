@@ -28,8 +28,9 @@ NUM_DOTS = 15  # default = 15
 SIZE = 0.1  # default = 0.1
 BALL_SPEED = 10  # default = 10
 PLAYER_SPEED = 0.8  # default = 0.8
+BALL_SPEEDING_AFTER = 50  # default = 50
 
 
-run = Game.RunGame(NUM_BALL, NUM_DOTS, SIZE, BALL_SPEED, PLAYER_SPEED)
+run = Game.RunGame(NUM_BALL, NUM_DOTS, SIZE, BALL_SPEED, PLAYER_SPEED, BALL_SPEEDING_AFTER)
 run.title()
 turtle.done()
