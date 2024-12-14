@@ -177,11 +177,11 @@ class RunGame:
             else:
                 self.switch = 0
 
-    def press_space(self, color_lst: list, y, size=20):
+    def press_space(self, color_lst: list, y, size=20, re=''):
         self.switch_color()
         self.ui.color(color_lst[self.switch])
         self.ui.goto(0, y)
-        self.ui.write(f"press SPACE to restart", font=("Courier", size, "bold"), align="center")
+        self.ui.write(f"press SPACE to {re}start", font=("Courier", size, "bold"), align="center")
 
         turtle.onkey(self.set_start, "space")  # press space to start
 
@@ -313,7 +313,7 @@ class RunGame:
 
             self.ui.goto(0, -20)
             self.ui.write(f"High Score: {highest}", font=("Courier", 20, "bold"), align="center")
-            self.press_space(color_lst, -100)
+            self.press_space(color_lst, -100, re="re")
             if self.start:
                 break
 
