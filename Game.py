@@ -14,7 +14,7 @@ def _random_no_0():
 
 
 class RunGame:
-    def __init__(self, balls: int = 5, dots: int = 10, size: int = 0.1,
+    def __init__(self, balls: int = 5, dots: int = 10, size: float = 0.1,
                  speed: int = 10, player_speed: float = 0.8, score_diff: int = 50, score_lst: list = None):
         self.speed = speed
         if score_lst is None:
