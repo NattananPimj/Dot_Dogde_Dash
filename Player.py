@@ -4,7 +4,7 @@ import math
 
 
 class Player:
-    def __init__(self, width, height, speed=0.8):
+    def __init__(self, width: float, height: float, speed: float =0.8):
         self.move = True
         self.body = turtle.Turtle()
         self.body.shape('triangle')

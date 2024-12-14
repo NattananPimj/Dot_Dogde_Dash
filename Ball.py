@@ -3,14 +3,13 @@ import math
 
 
 class Ball:
-    def __init__(self, size, x, y, vx, vy, width, height):
+    def __init__(self, size: int, x: float, y: float, vx: float, vy: float, width: float, height: float):
         self.size = size
         self.x = x
         self.y = y
         self.vx = vx
         self.vy = vy
         self.color = "red"
-        self.mass = 100 * size ** 2
         self.count = 0
         self.canvas_width = width
         self.canvas_height = height
