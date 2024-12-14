@@ -16,7 +16,7 @@ def _random_no_0():
 class RunGame:
     def __init__(self, balls: int = 5, dots: int = 10, size: float = 0.1,
                  speed: int = 10, player_speed: float = 0.8, score_diff: int = 50, score_lst: list = None):
-        self.speed = speed
+        self.__speed = speed
         if score_lst is None:
             score_lst = [0]
         self.__score = 0
@@ -33,7 +33,7 @@ class RunGame:
         self.canvas_width = turtle.screensize()[0]
         self.canvas_height = turtle.screensize()[1]
         self.player_speed = player_speed
-        self.player = Player.Player(self.canvas_width, self.canvas_height, self.player_speed)
+        self.__player = Player.Player(self.canvas_width, self.canvas_height, self.player_speed)
         print(self.canvas_width, self.canvas_height)
         self.size = size
         self.ball_rad = int(self.size * self.canvas_height)
@@ -56,9 +56,9 @@ class RunGame:
         self.ui.penup()
         turtle.hideturtle()
         self.screen_ui = turtle.Screen()
-        self.start = False
-        self.switch = 0
-        self.start_time = time.time()
+        self.__start = False
+        self.__switch = 0
+        self.__start_time = time.time()
         self.speed_up_after = score_diff
 
     def __draw_border(self):
@@ -81,7 +81,7 @@ class RunGame:
         for ball in self.ball_list:
             ball.draw()
 
-    def in_game_ui(self):
+    def __in_game_ui(self):
         self.ui.color("black")
         self.ui.goto(180, 240)
         self.ui.write(f"Score: {self.__score}", font=("Comic Sans MS", 30, "normal"))
@@ -89,127 +89,127 @@ class RunGame:
         self.ui.write(f"High Score: {max(self.__score_lst)}", font=("Comic Sans MS", 20, "normal"))
         self.ui.goto(-350, 240)
         self.ui.color("DarkRed")
-        self.ui.write(f"LIFE: {self.player.life}", font=("Comic Sans MS", 30, "normal"))
+        self.ui.write(f"LIFE: {self.__player.life}", font=("Comic Sans MS", 30, "normal"))
 
-    def check_dot_hit(self):
+    def __check_dot_hit(self):
         for d in self.dots_lst:
-            if self.player.distance(d) <= (d.radius + 10):
+            if self.__player.distance(d) <= (d.radius + 10):
                 self.__score += 1
                 self.dots_lst.remove(d)
 
-    def generate_dots(self):
+    def __generate_dots(self):
         if len(self.dots_lst) <= self.num_dots - 2:
             d = dot.Dot(random.randint(-self.canvas_width + 20, self.canvas_width - 20),
                         random.randint(-self.canvas_height + 20, self.canvas_height - 20))
             self.dots_lst.append(d)
 
-    def speed_up(self, ball):
+    def __speed_up(self, ball):
         if self.__score >= self.speed_up_after:
             ball.vx += (self.__score - self.speed_up_after) * 0.001 / 5
             ball.vy += (self.__score - self.speed_up_after) * 0.001 / 5
 
     def __run(self):
-        self.player.reset_life()
-        self.player.be_immune()  # let player be immune at the start
-        self.player.body.showturtle()
+        self.__player.reset_life()
+        self.__player.be_immune()  # let player be immune at the start
+        self.__player.body.showturtle()
         self.__draw_border()
         turtle.hideturtle()
         for ball in self.ball_list:
             ball.draw()
 
-        self.player.controlled()
-        self.player.screen.listen()
+        self.__player.controlled()
+        self.__player.screen.listen()
 
         while True:
             # PLAYER
-            self.player.check_wall()
-            self.player.body.showturtle()
-            self.player.movement()
-            self.player.undash()
+            self.__player.check_wall()
+            self.__player.body.showturtle()
+            self.__player.movement()
+            self.__player.undash()
             # DOTS
-            self.check_dot_hit()
-            self.generate_dots()
+            self.__check_dot_hit()
+            self.__generate_dots()
 
             # ball collision
             for ball in self.ball_list:
                 ball.move(self.dt)
                 # speed up as you go high
-                self.speed_up(ball)
+                self.__speed_up(ball)
                 ball.bounce_wall()
                 # check hit player
-                if (self.player.distance(ball) <= (ball.radius + 10) and not self.player.immunity
-                        and self.player.life > 0):
-                    self.player.decrease_life()
-                    if self.player.life > 0:
-                        self.player.be_immune()
-                    if self.player.life == 0:
+                if (self.__player.distance(ball) <= (ball.radius + 10) and not self.__player.immunity
+                        and self.__player.life > 0):
+                    self.__player.decrease_life()
+                    if self.__player.life > 0:
+                        self.__player.be_immune()
+                    if self.__player.life == 0:
                         # stop the ball and player
-                        self.player.disable_movement()
+                        self.__player.disable_movement()
                         for b in self.ball_list:
                             b.moving = False
-                        self.player.body.color("red")
+                        self.__player.body.color("red")
                         break
             turtle.clear()
             self.ui.clear()
-            self.in_game_ui()
+            self.__in_game_ui()
             self.__redraw()
-            if self.player.life == 0:
+            if self.__player.life == 0:
                 break
-            self.player.stop_immune()
+            self.__player.stop_immune()
 
         self.__score_lst.append(self.__score)
-        self.game_over()
+        self.__game_over()
 
-    def set_start(self):
-        self.start = True  # for turtle to use
+    def __set_start(self):
+        self.__start = True  # for turtle to use
 
-    def title_ui(self):
+    def __title_ui(self):
         turtle.hideturtle()
         self.ui.color("black")
         self.ui.goto(0, 50)
         self.ui.write("DOT DASH DODGE", font=("Courier", 50, "bold"), align="center")
 
-    def switch_color(self):
-        if time.time() - self.start_time >= 0.5:
-            self.start_time = time.time()
-            if self.switch == 0:
-                self.switch = 1
+    def __switch_color(self):
+        if time.time() - self.__start_time >= 0.5:
+            self.__start_time = time.time()
+            if self.__switch == 0:
+                self.__switch = 1
             else:
-                self.switch = 0
+                self.__switch = 0
 
-    def press_space(self, color_lst: list, y, size=20, re=''):
-        self.switch_color()
-        self.ui.color(color_lst[self.switch])
+    def __press_space(self, color_lst: list, y, size=20, re=''):
+        self.__switch_color()
+        self.ui.color(color_lst[self.__switch])
         self.ui.goto(0, y)
         self.ui.write(f"press SPACE to {re}start", font=("Courier", size, "bold"), align="center")
 
-        turtle.onkey(self.set_start, "space")  # press space to start
+        turtle.onkey(self.__set_start, "space")  # press space to start
 
     def title(self):
         color_lst = ["green", "green3"]
         turtle.hideturtle()
-        self.player.screen.listen()
-        self.player.body.hideturtle()
-        self.start_time = time.time()
+        self.__player.screen.listen()
+        self.__player.body.hideturtle()
+        self.__start_time = time.time()
         while True:
             # Changing color off ui so cool aa ><
-            self.switch_color()
+            self.__switch_color()
             turtle.clear()
             self.ui.clear()
-            self.title_ui()
-            self.press_space(color_lst, 0, 30)
+            self.__title_ui()
+            self.__press_space(color_lst, 0, 30)
             turtle.update()  # don't dare u remove this line this is life
-            if self.start:
+            if self.__start:
                 break
         self.ui.clear()
-        self.start = False
+        self.__start = False
         self.__tutorial()
 
     def __tutorial(self):
-        self.player.reset_movement()
+        self.__player.reset_movement()
         turtle.hideturtle()
         colorlst = ["green", "green3"]
-        self.start_time = time.time()
+        self.__start_time = time.time()
         while True:
             # title
             turtle.clear()
@@ -286,21 +286,21 @@ class RunGame:
             self.ui.write("You Have 3 Life, GOODLUCK.",
                           font=("Courier", 20, "bold"), align="left")
 
-            self.press_space(colorlst, -230, 30)
+            self.__press_space(colorlst, -230, 30)
 
             turtle.update()  # don't dare u remove this line. this is life
 
-            if self.start:
+            if self.__start:
                 break
         self.ui.clear()
         self.__run()
 
-    def game_over(self):
-        self.start = False
+    def __game_over(self):
+        self.__start = False
         score = self.__score
         highest = max(self.__score_lst)
         color_lst = ["DeepPink4", "DeepPink3"]
-        self.start_time = time.time()
+        self.__start_time = time.time()
         self.__score = 0
         while True:
             self.ui.color("black")
@@ -313,18 +313,18 @@ class RunGame:
 
             self.ui.goto(0, -20)
             self.ui.write(f"High Score: {highest}", font=("Courier", 20, "bold"), align="center")
-            self.press_space(color_lst, -100, re="re")
-            if self.start:
+            self.__press_space(color_lst, -100, re="re")
+            if self.__start:
                 break
 
             turtle.update()  # don't delete this. this is life
-        self.resetting()
+        self.__resetting()
         self.__run()
 
-    def resetting(self):
-        self.player.body.hideturtle()  # hiding the body. hehehe
+    def __resetting(self):
+        self.__player.body.hideturtle()  # hiding the body. hehehe
         turtle.clear()
         self.ui.clear()
-        del self.player
-        self.__init__(self.num_balls, self.num_dots, self.size, self.speed, self.player_speed, self.speed_up_after,
+        del self.__player
+        self.__init__(self.num_balls, self.num_dots, self.size, self.__speed, self.player_speed, self.speed_up_after,
                       score_lst=self.__score_lst)
