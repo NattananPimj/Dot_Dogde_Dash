@@ -109,7 +109,7 @@ class RunGame:
             ball.vy += (self.__score - self.speed_up_after) * 0.001 / 5
 
     def __run(self):
-        self.player.life = 3
+        self.player.reset_life()
         self.player.be_immune()  # let player be immune at the start
         self.player.body.showturtle()
         self.__draw_border()
@@ -139,7 +139,7 @@ class RunGame:
                 # check hit player
                 if (self.player.distance(ball) <= (ball.size + 10) and not self.player.immunity
                         and self.player.life > 0):
-                    self.player.life -= 1
+                    self.player.decrease_life()
                     if self.player.life > 0:
                         self.player.be_immune()
                     if self.player.life == 0:

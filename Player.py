@@ -4,14 +4,14 @@ import math
 
 
 class Player:
-    def __init__(self, width: float, height: float, speed: float =0.8):
+    def __init__(self, width: float, height: float, speed: float = 0.8):
         self.move = True
         self.body = turtle.Turtle()
         self.body.shape('triangle')
         self.body.color('blue')
         self.body.penup()
         self.body.speed(1)
-        self.life = 3
+        self.__life = 3
         self.__default_speed = speed
         self.speed = self.__default_speed
         self.body.speed(self.speed)
@@ -24,6 +24,16 @@ class Player:
         self.dashtime = 0
         self.immunity = False
         self.immunetime = 0
+
+    def decrease_life(self):
+        self.__life -= 1
+
+    def reset_life(self):
+        self.__life = 3
+
+    @property
+    def life(self):
+        return self.__life
 
     def movement(self):
         if self.keys["w"] and (not self.keys["upwall"]) and self.move:
