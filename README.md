@@ -47,6 +47,8 @@ UML CLASS:
 
 - ### Bugs
   - There still some weird frame loading when running through cmd (but mine work now) or some computer, but in most computer(3/4) they work.
+    [Blinking_bug.mp4](Pic_and_Vid/Blinking_bug.mp4)
+    - https://youtu.be/_nSv2oZEvT8
   - If you press space as soon as you die in any reasons(you might want to dash but fail), the game will automatically start a new game.
   - _others are working normally_
 
